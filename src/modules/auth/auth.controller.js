@@ -22,4 +22,13 @@ const login = asyncHandler(async (req, res) => {
     })
 })
 
-export default { signup, login }
+const verifyOTP = asyncHandler(async (req, res) => {
+    const { userId, otp } = req.body
+    const result = await authService.verifyOTP(userId, otp)
+    res.json({
+        success: true,
+        ...result,
+    })
+})
+
+export default { signup, login, verifyOTP }

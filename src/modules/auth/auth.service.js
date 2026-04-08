@@ -57,4 +57,24 @@ const login = async (identifier, password) => {
     return user
 }
 
-export default { login, signup }
+const verifyOTP = async (userId, otpCode) => {
+    const user = await authRepository.findUserById(userId)
+    if (!user) {
+        throw new ApiError(404, 'User not found')
+    }
+    console.log(`User verified: ${user.is_verified}`)
+    if (user.is_verified) {
+        throw new ApiError(400, 'User already verified')
+    }
+    const otpRecord = await otpRepository.findValidOTP(userId, otpCode)
+    if (!otpRecord) {
+        throw new ApiError(4000, 'Invalid or expired OTP')
+    }
+    await otpRepository.markOTPUsed(otpRecord.id)
+    await authRepository.markUserVerified(userId)
+    return {
+        message: "User verified successfully",
+    }
+}
+
+export default { login, signup, verifyOTP }
