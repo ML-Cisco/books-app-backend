@@ -3,6 +3,7 @@ import {ApiError} from "../../utils/ApiError.js";
 import {comparePassword, hashPassword} from "../../utils/password.js";
 import {generateOTP, getOTPExpiry} from "../../utils/otp.js";
 import otpRepository from "./otp.repository.js";
+import {generateToken} from "../../utils/jwt.js";
 
 export const signup = async (data) => {
     const {
@@ -54,7 +55,14 @@ const login = async (identifier, password) => {
         throw new ApiError(401, 'Invalid credentials')
     }
     /* Later add JWT */
-    return user
+    const token = generateToken({
+        userId: user.id,
+        email: user.email,
+    })
+    return {
+        user,
+        token
+    }
 }
 
 const verifyOTP = async (userId, otpCode) => {

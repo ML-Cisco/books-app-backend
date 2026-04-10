@@ -3,17 +3,17 @@ import {ApiError} from "../../utils/ApiError.js";
 import {asyncHandler} from "../../middlewares/asyncHandler.js";
 
 const createBook = asyncHandler(async (req, res) => {
-    const book = await bookService.createBook(req.body)
+    const book = await bookService.createBook(req.body, req.user.userId)
     res.status(201).json({success: true, data: book})
 })
 
 const getAllBooks = asyncHandler(async (req, res) => {
-    const data = await bookService.getAllBooks()
+    const data = await bookService.getAllBooks(req.user.userId)
     res.status(200).json({ success: true, data: data })
 })
 
 const getBookById = asyncHandler(async (req, res) => {
-    const data = await bookService.getBookById(req.params.id)
+    const data = await bookService.getBookById(req.params.id, req.user.userId)
     if (!data) {
         throw new ApiError(404, 'Book not found')
     }
@@ -21,7 +21,7 @@ const getBookById = asyncHandler(async (req, res) => {
 })
 
 const updateBook = asyncHandler(async (req, res) => {
-    const updatedBook = await bookService.updateBook(req.params.id, req.body)
+    const updatedBook = await bookService.updateBook(req.params.id, req.user.userId, req.body)
     if (!updatedBook) {
         throw new ApiError(404, 'Book not found')
     }
@@ -29,7 +29,7 @@ const updateBook = asyncHandler(async (req, res) => {
 })
 
 const deleteBook = asyncHandler(async (req, res) => {
-    const deletedBook = await bookService.deleteBook(req.params.id)
+    const deletedBook = await bookService.deleteBook(req.params.id, req.user.userId)
     if (!deletedBook) {
         throw new ApiError(404, 'Book not found')
     }

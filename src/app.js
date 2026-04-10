@@ -1,12 +1,22 @@
 import express from 'express'
-import pool from "./db/mysql.js";
-import bookRoutes from "./modules/books/book.routes.js";
-import authRoutes from "./modules/auth/auth.routes.js";
-import {errorMiddleware} from "./middlewares/error.middleware.js";
+import cors from 'cors'
+import pool from "./db/mysql.js"
+import bookRoutes from "./modules/books/book.routes.js"
+import authRoutes from "./modules/auth/auth.routes.js"
+import {errorMiddleware} from "./middlewares/error.middleware.js"
 
 const app = express()
 
 app.use(express.json())
+
+/* CORS config */
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
+);
 
 /* health check route */
 app.get("/health", (req, res) => {

@@ -11,13 +11,16 @@ const signup = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
     const { identifier, password } = req.body
-    const user = await authService.login(identifier, password)
+    const { user, token } = await authService.login(identifier, password)
     res.json({
         success: true,
         message: 'Login successful',
         data: {
-            id: user.id,
-            email: user.email,
+            token,
+            user: {
+                id: user.id,
+                email: user.email,
+            }
         }
     })
 })

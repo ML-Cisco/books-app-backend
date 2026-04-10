@@ -1,23 +1,23 @@
 import bookRepository from "./book.repository.js";
 
-const createBook = async (bookData) => {
-    return await bookRepository.createBook(bookData);
+const createBook = async (bookData, userId) => {
+    return await bookRepository.createBook(bookData, userId);
 }
 
-const getAllBooks = async () => {
-    return await bookRepository.getAllBooks()
+const getAllBooks = async (userId) => {
+    return await bookRepository.getAllBooks(userId)
 }
 
-const getBookById = async (bookId) => {
-    return await bookRepository.getBookById(bookId)
+const getBookById = async (bookId, userId) => {
+    return await bookRepository.getBookById(bookId, userId)
 }
 
-const updateBook = async (id, bookData) => {
-    return await bookRepository.updateBook(id, bookData)
+const updateBook = async (id, userId, bookData) => {
+    return await bookRepository.updateBook(id, userId, bookData)
 }
 
-const deleteBook = async (bookId) => {
-    return await bookRepository.deleteBook(bookId)
+const deleteBook = async (bookId, userId) => {
+    return await bookRepository.deleteBook(bookId, userId)
 }
 
 export default { createBook, getAllBooks, getBookById, updateBook, deleteBook }
